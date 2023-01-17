@@ -19,7 +19,7 @@ import { Board } from './apis/boards/entities/board.entity';
       username: 'root',
       password: '12345678',
       database: 'myproject03',
-      entities: [Board],
+      entities: [__dirname + '/apis/**/*.entity.*'],
       synchronize: true,
       logging: true,
     }),
