@@ -14,12 +14,51 @@ type ProductCategory {
   name: String!
 }
 
+type ProductSaleslocation {
+  id: String!
+  address: String!
+  addressDetail: String!
+  lat: Float!
+  lng: Float!
+  meetingTime: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ProductTag {
+  id: String!
+  name: String!
+  products: [Product!]!
+}
+
+type User {
+  id: String!
+  email: String!
+  password: String!
+}
+
+type Product {
+  id: String!
+  name: String!
+  description: String!
+  price: Int!
+  isSoldout: Boolean!
+  productSaleslocation: ProductSaleslocation!
+  productCategory: ProductCategory!
+  user: User!
+  productTags: [ProductTag!]!
+}
+
 type Query {
   fetchBoard: [Board!]!
 }
 
 type Mutation {
   createBoard(createBoardInput: CreateBoardInput!): String!
+  createProduct(createProductInput: CreateProductInput!): Product!
   createProductCategory(name: String!): ProductCategory!
 }
 
@@ -27,4 +66,10 @@ input CreateBoardInput {
   writer: String!
   title: String!
   contents: String!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  price: Int!
 }
