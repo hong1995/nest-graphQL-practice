@@ -37,4 +37,10 @@ export class ProductResolver {
     //수정하기
     return await this.productService.update({ productId, updateProductInput });
   }
+  @Mutation(() => Boolean)
+  deleteProduct(
+    @Args('productId') productId: string, //
+  ) {
+    return this.productService.delete({ productId });
+  }
 }

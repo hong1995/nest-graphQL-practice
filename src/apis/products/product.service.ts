@@ -57,4 +57,19 @@ export class ProductService {
     //   );
     // }
   }
+
+  async delete({ productId }) {
+    // //1. 실제 삭제
+    // const result = await this.productRepository.delete({ id: productId });
+    // return result.affected ? true : false;
+    // //2. 소프트 삭제(직접 구현) - isDeleted
+    // this.productRepository.update({ id: productId }, { isDeleted: true });
+    // //3. 소프트 삭제(직접 구현) - deletedAt
+    // this.productRepository.update({ id: productId }, { deletedAt: new Date() });
+    // //4. 소프트 삭제(TypeORM 제공) - softRemove
+    // this.productRepository.softRemove({ id: productId });//id로만 삭제 가능
+    //5. 소프트 삭제(TypeORM 제공) - softDelete
+    const result = await this.productRepository.softDelete({ id: productId });
+    return result.affected ? true : false;
+  }
 }
