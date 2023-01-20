@@ -18,11 +18,16 @@ export class ProductService {
     private readonly productSaleslocationRepository: Repository<ProductSaleslocation>,
   ) {}
   async findAll() {
-    return await this.productRepository.find();
+    return await this.productRepository.find({
+      relations: ['productSaleslocation', 'productCategory'],
+    });
   }
 
   async findOne({ productId }) {
-    return await this.productRepository.findOne({ where: { id: productId } });
+    return await this.productRepository.findOne({
+      where: { id: productId },
+      relations: ['productSaleslocation', 'productCategory'],
+    });
   }
   async create({ createProductInput }) {
     // 1. 상품만 등록하는 경우
@@ -35,7 +40,8 @@ export class ProductService {
     // });
 
     // 2. 상품과 상품거래위치를 같이 등록하는 경우
-    const { productSaleslocation, ...product } = createProductInput; //분리하는법
+    const { productSaleslocation, productCategoryId, ...product } =
+      createProductInput; //분리하는법
     // const aaa = createProductInput.productSaleslocation;
     // const bbb = {
     //   name: createProductInput.name,
@@ -47,7 +53,10 @@ export class ProductService {
     });
     const result2 = await this.productRepository.save({
       ...product,
-      productSaleslocation: result,
+      productSaleslocation: result, // result 톰쨰로 넣기 vs id만 넣기
+      productCategory: {
+        id: productCategoryId,
+      },
     });
     return result2;
   }
