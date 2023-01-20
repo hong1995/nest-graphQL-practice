@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProductSaleslocation } from '../productSaleslocation/entities/productSaleslocation.entity';
 import { Product } from './entities/product.entity';
 
 @Injectable()
@@ -13,6 +14,8 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(ProductSaleslocation)
+    private readonly productSaleslocationRepository: Repository<ProductSaleslocation>,
   ) {}
   async findAll() {
     return await this.productRepository.find();
@@ -22,14 +25,31 @@ export class ProductService {
     return await this.productRepository.findOne({ where: { id: productId } });
   }
   async create({ createProductInput }) {
-    const result = await this.productRepository.save({
-      ...createProductInput,
-      // 하나하나 직접 입력하는 방식
-      // name: createProductInput.name,
-      // description: createProductInput.description,
-      // price: createProductInput.price,
+    // 1. 상품만 등록하는 경우
+    // const result = await this.productRepository.save({
+    //   ...createProductInput,
+    //   // 하나하나 직접 입력하는 방식
+    //   // name: createProductInput.name,
+    //   // description: createProductInput.description,
+    //   // price: createProductInput.price,
+    // });
+
+    // 2. 상품과 상품거래위치를 같이 등록하는 경우
+    const { productSaleslocation, ...product } = createProductInput; //분리하는법
+    // const aaa = createProductInput.productSaleslocation;
+    // const bbb = {
+    //   name: createProductInput.name,
+    //   description: createProductInput.description,
+    //   price: createProductInput.price,
+    // };
+    const result = await this.productSaleslocationRepository.save({
+      ...productSaleslocation,
     });
-    return result;
+    const result2 = await this.productRepository.save({
+      ...product,
+      productSaleslocation: result,
+    });
+    return result2;
   }
   async update({ productId, updateProductInput }) {
     const myproduct = await this.productRepository.findOne({
