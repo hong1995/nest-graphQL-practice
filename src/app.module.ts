@@ -7,6 +7,7 @@ import { Board } from './apis/boards/entities/board.entity';
 import { ProductCategoryModule } from './apis/prdouctCategory/productCategory.module';
 import { ProductModule } from './apis/products/product.module';
 import { UserModule } from './apis/users/user.module';
+import { AuthModule } from './apis/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './apis/users/user.module';
     ProductModule,
     ProductCategoryModule,
     UserModule,
+    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
