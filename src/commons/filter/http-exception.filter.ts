@@ -10,5 +10,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     console.log('예외내용:', message);
     console.log('예외코드', status);
     console.log('=============================');
+
+    if (status === 500)
+      return new HttpException('이건 서버 문제로 인한 예외에요!!', 500);
   }
 }

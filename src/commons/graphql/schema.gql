@@ -58,6 +58,7 @@ type Query {
   fetchBoard: [Board!]!
   fetchProducts: [Product!]!
   fetchProduct(productId: String!): Product!
+  fetchUser: String!
 }
 
 type Mutation {
