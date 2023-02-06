@@ -7,7 +7,10 @@ import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 
 @Module({
-  imports: [JwtModule.register({}), TypeOrmModule.forFeature([User])],
+  imports: [
+    JwtModule.register({}), //
+    TypeOrmModule.forFeature([User]),
+  ],
   providers: [
     AuthResolver, //
     AuthService,

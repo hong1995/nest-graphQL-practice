@@ -20,7 +20,7 @@ export class UserResolver {
     @Args('name') name: string,
     @Args('age') age: number,
   ) {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10.2);
     return this.userService.create({ email, hashedPassword, name, age });
   }
 

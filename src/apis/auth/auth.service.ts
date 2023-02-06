@@ -7,6 +7,22 @@ export class AuthService {
     private readonly jwtService: JwtService, //
   ) {}
 
+  setRefreshToken({ user, res }) {
+    const refreshToken = this.jwtService.sign(
+      { email: user.email, sub: user.id },
+      { secret: 'myRefreshKey', expiresIn: '2w' },
+    );
+    //개발환경
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+
+    // 배포환경
+    // res.setHeader('Access-Control-Allow-Origin', 'https://myfrontsite.com')
+    // res.setHeader(
+    //   'Set-Cookie',
+    //   `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly;`
+    // )
+  }
+
   getAcessToken({ user }) {
     return this.jwtService.sign(
       { email: user.email, sub: user.id },
