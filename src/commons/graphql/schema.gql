@@ -69,6 +69,7 @@ type Mutation {
   createProductCategory(name: String!): ProductCategory!
   createUser(email: String!, password: String!, name: String!, age: Float!): User!
   login(email: String!, password: String!): String!
+  restoreAccessToken: String!
 }
 
 input CreateBoardInput {

@@ -1,8 +1,10 @@
-import { UnprocessableEntityException } from '@nestjs/common';
+import { UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { UserService } from '../users/user.service';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
+import { GqlAuthRefreshGuard } from 'src/commons/auth/gql-auth.guard';
+import { CurrentUser } from 'src/commons/auth/gql-user.param';
 
 @Resolver()
 export class AuthResolver {
@@ -31,5 +33,13 @@ export class AuthResolver {
 
     //5. 일치하는 유저가 있으면?! accessToken(=JWT)을 만들어서 브라우저에 전달하기
     return this.authService.getAcessToken({ user });
+  }
+
+  @UseGuards(GqlAuthRefreshGuard)
+  @Mutation(() => String)
+  restoreAccessToken(
+    @CurrentUser() currentUser: any, //
+  ) {
+    return this.authService.getAcessToken({ user: currentUser });
   }
 }
